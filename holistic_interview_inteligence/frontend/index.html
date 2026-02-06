@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Holistic Interview Intelligence</title>
+</head>
+<body>
+
+  <h1>AI Mock Interview</h1>
+
+  <label>Enter Job Role:</label><br>
+  <input type="text" id="roleInput" placeholder="Python Developer"><br><br>
+
+  <button onclick="startInterview()">Start Interview</button>
+
+  <h3>Interview Question:</h3>
+  <p id="question">No question yet</p>
+
+  <script>
+    function startInterview() {
+      const role = document.getElementById("roleInput").value;
+
+      if (role === "") {
+        alert("Please enter a role");
+        return;
+      }
+
+      fetch("http://127.0.0.1:5000/start_interview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role: role })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("question").innerText = data.question;
+      })
+      .catch(error => {
+        alert("Backend not reachable");
+        console.error(error);
+      });
+    }
+  </script>
+
+</body>
+</html>
